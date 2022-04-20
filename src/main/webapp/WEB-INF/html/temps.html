@@ -1,0 +1,83 @@
+<header class="bg-dark" th:fragment="header">
+    <!-- <div class="container">
+        <div class="row text-light align-items-center justify-content-between">
+            <div class="col-5">
+                <h1 style="color:gold;">WebCryptoExchange<br /></h1>
+            </div>
+            <div class="col-6 text-end dropdown">
+                <div class="dropdown">
+                        <button type="button"
+                        class="btn btn-success dropdown-toggle"
+                        data-toggle="dropdown">
+                    Dropdown
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Option A</a>
+                    <a class="dropdown-item" href="#">Option B</a>
+                    <a class="dropdown-item" href="#">Option C</a>
+                    <a class="dropdown-item" href="#">Option D</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color:gold;">WebCryptoExchange<br /></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</header>
+
+<footer class="py-2 bg-dark text-light" th:fragment="footer">
+    <div class="container text-center">
+        <p class="small">Copyright
+            <script>document.write(new Date().getFullYear())</script> &copy; <a href="#">MM</a>
+        </p>
+    </div>
+</footer>
+
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" th:fragment="admin-navbar">
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li>
+            <a href="#" class="nav-link text-white">
+                Мои викторины
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Мой профиль
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Управление пользователями
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                Мои отзывы
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <a href="#" class="nav-link text-white">
+        Выход
+    </a>
+</div>

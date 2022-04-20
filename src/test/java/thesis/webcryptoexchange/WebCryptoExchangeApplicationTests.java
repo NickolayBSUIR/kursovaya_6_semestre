@@ -1,10 +1,10 @@
-package study.kursovaya;
+package thesis.webcryptoexchange;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KursovayaApplicationTests {
+class WebCryptoExchangeApplicationTests {
 
 	@Test
 	void contextLoads() {
