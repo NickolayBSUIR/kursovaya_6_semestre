@@ -16,9 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "?1", nativeQuery = true)
     void pureQuery(String str);
-
-    // @Transactional
-    // @Modifying
-    // @Query(value = "SELECT * FROM users WHERE id=?1", nativeQuery = true)
-    // Collection<User> findOne(Integer id);
 }

@@ -8,18 +8,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "transactions")
-public class Transaction{
+@Table(name = "user_currencies")
+public class UserCurrency{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "currency_count")
-    private Double currencyCount;
-    @Column(name = "usd_count")
-    private Double usdCount;
-    private Boolean success = true;
-    private LocalTime time = LocalTime.now();
+    private Double count = 0.0;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

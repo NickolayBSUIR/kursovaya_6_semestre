@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Currency{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     private String name;
     private Double rate;
@@ -20,4 +20,7 @@ public class Currency{
 
     @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<Transaction>();
+
+    @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL)
+    private List<UserCurrency> userCurrencies = new ArrayList<UserCurrency>();
 }

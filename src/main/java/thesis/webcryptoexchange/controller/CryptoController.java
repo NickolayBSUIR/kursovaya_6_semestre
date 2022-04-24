@@ -47,12 +47,13 @@ public class CryptoController {
 
     @PostMapping("/transac")
     public String transactionTrade(Transaction trans, @RequestParam String crypto, @RequestParam Boolean buying, Model model) {
-        if (crypService.transaction(trans, crypto, buying)){
-            model.addAttribute("msg", "Транзакция проведена успешно!");
-        }
-        else {
-            model.addAttribute("msg", "Транзакция безуспешна.");
-        }
+        crypService.transaction(trans, crypto, buying);
+        // if (crypService.transaction(trans, crypto, buying)){
+        //     model.addAttribute("msg", "Транзакция проведена успешно!");
+        // }
+        // else {
+        //     model.addAttribute("msg", "Транзакция безуспешна.");
+        // }
         return "redirect:/";
     }
 }

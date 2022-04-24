@@ -21,4 +21,7 @@ public class User{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<Transaction>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserCurrency> userCurrencies = new ArrayList<UserCurrency>();
 }
