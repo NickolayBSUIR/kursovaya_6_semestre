@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.core.env.Environment;
 
-import thesis.webcryptoexchange.service.CurrencyService;
+import thesis.webcryptoexchange.model.Transaction;
+import thesis.webcryptoexchange.service.CryptoService;
 
 @Controller
 public class CryptoController {
     @Autowired
-    private CurrencyService currService;
+    private CryptoService crypService;
 
     @Autowired
     private Environment env;
@@ -24,7 +25,7 @@ public class CryptoController {
 
     @GetMapping("/")
     public String cryptoExchange(Model model, String error) {
-        model.addAttribute("currs", currService.findAll());
+        model.addAttribute("currs", crypService.findAll());
         model.addAttribute("col", isUpdate);
         model.addAttribute("btn", (isUpdate ? "btn btn-danger" : "btn btn-success"));
         return "crypto";
@@ -33,7 +34,7 @@ public class CryptoController {
     @GetMapping("/new")
     public String updateControl(Model model, String error) {
         if (!isUpdate) {
-            updateThread = currService.update(env);
+            updateThread = crypService.update(env);
             updateThread.start();
             isUpdate = true;
         }
@@ -45,8 +46,13 @@ public class CryptoController {
     }
 
     @PostMapping("/transac")
-    public String transactionTrade(@RequestParam String crypto) {
-        System.out.println(crypto);
+    public String transactionTrade(Transaction trans, @RequestParam String crypto, @RequestParam Boolean buying, Model model) {
+        if (crypService.transaction(trans, crypto, buying)){
+            model.addAttribute("msg", "Транзакция проведена успешно!");
+        }
+        else {
+            model.addAttribute("msg", "Транзакция безуспешна.");
+        }
         return "redirect:/";
     }
 }

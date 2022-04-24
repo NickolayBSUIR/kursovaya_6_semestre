@@ -1,5 +1,5 @@
 package thesis.webcryptoexchange.model;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +20,5 @@ public class User{
     private Boolean enabled = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<Transaction>();
 }

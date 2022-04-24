@@ -14,15 +14,25 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 import thesis.webcryptoexchange.model.Currency;
+import thesis.webcryptoexchange.model.Transaction;
+import thesis.webcryptoexchange.model.User;
 import thesis.webcryptoexchange.repository.CurrencyRepository;
+import thesis.webcryptoexchange.repository.TransactionRepository;
+import thesis.webcryptoexchange.repository.UserRepository;
 
 @Service
-public class CurrencyService {
+public class CryptoService {
     @Autowired
-    private CurrencyRepository repo;
+    private CurrencyRepository currRepo;
+
+    @Autowired
+    private TransactionRepository tranRepo;
+
+    @Autowired
+    private UserRepository userRepo;
 
     public List<Currency> findAll() {
-        return repo.findAll();
+        return currRepo.findAll();
     }
 
     public Thread update(Environment env) {
@@ -75,7 +85,7 @@ public class CurrencyService {
                         statement.executeUpdate("INSERT currencies(name, rate, change_hour, change_day) VALUES "
                                 + String.join(", ", list)
                                 + " ON DUPLICATE KEY UPDATE rate = VALUES(rate), change_hour = VALUES(change_hour), change_day = VALUES(change_day)");
-                                Thread.sleep(10000);
+                                Thread.sleep(300000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -84,5 +94,35 @@ public class CurrencyService {
         };
 
         return thread;
+    }
+
+    public Boolean transaction(Transaction trans, String currency, Boolean buying) {
+        Double num = 0.0;
+        User user = userRepo.findById((long)1).get();
+        Currency curr = currRepo.findByName(currency);
+        trans.setSuccess(false);
+        user.getTransactions().add(trans);
+        curr.getTransactions().add(trans);
+        trans.setCurrency(curr);
+        trans.setUser(user);
+        if (buying) {
+            trans.setUsdCount(curr.getRate() * trans.getCurrencyCount());
+            num = user.getMoney() - curr.getRate() * trans.getCurrencyCount();
+            
+            if (num < 0) {
+                return false;
+            }
+
+            user.setMoney(num);
+        }
+        else {
+
+        }
+        user.getTransactions().add(trans);
+        curr.getTransactions().add(trans);
+        trans.setCurrency(curr);
+        trans.setUser(user);
+        tranRepo.save(trans);
+        return true;
     }
 }

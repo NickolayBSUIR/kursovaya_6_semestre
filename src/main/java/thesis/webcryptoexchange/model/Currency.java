@@ -1,5 +1,5 @@
 package thesis.webcryptoexchange.model;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,5 +19,5 @@ public class Currency{
     private Double change_day;
 
     @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL)
-    private Set<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<Transaction>();
 }

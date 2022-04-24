@@ -1,5 +1,7 @@
 package thesis.webcryptoexchange.repository;
 
+import java.util.*;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "?1", nativeQuery = true)
     void pureQuery(String str);
+
+    // @Transactional
+    // @Modifying
+    // @Query(value = "SELECT * FROM users WHERE id=?1", nativeQuery = true)
+    // Collection<User> findOne(Integer id);
 }

@@ -1,5 +1,5 @@
 package thesis.webcryptoexchange.model;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 import java.time.*;
 import lombok.Getter;
@@ -14,8 +14,11 @@ public class Transaction{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    private String currency_count;
-    private Double usd_count;
+    @Column(name = "currency_count")
+    private Double currencyCount;
+    @Column(name = "usd_count")
+    private Double usdCount;
+    private Boolean success = true;
     private LocalTime time = LocalTime.now();
 
     @ManyToOne

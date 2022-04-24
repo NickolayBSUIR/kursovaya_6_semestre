@@ -10,11 +10,6 @@ import org.springframework.core.env.Environment;
 
 import java.net.*;
 import java.util.Scanner;
-import java.sql.*;
-import org.json.simple.*;
-import org.json.simple.parser.*;
-
-import java.io.*;
 
 import thesis.webcryptoexchange.model.User;
 import thesis.webcryptoexchange.repository.UserRepository;
