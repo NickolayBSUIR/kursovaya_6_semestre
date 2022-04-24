@@ -7,22 +7,18 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
-
-    private String username;
-
-    @Transient
-    private String passwordConfirm;
-
+    private String name;
     private String password;
+    private Double money;
+    private String role = "ROLE_USER";
+    private Boolean enabled = true;
 
-    private String role = "USER";
-
-    private Boolean ban = false;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Transaction> transactions;
 }

@@ -4,7 +4,6 @@ package thesis.webcryptoexchange.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.core.env.Environment;
 
@@ -13,8 +12,6 @@ import java.util.Scanner;
 import java.sql.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
-
-import java.io.*;
 
 import thesis.webcryptoexchange.model.Currency;
 import thesis.webcryptoexchange.repository.CurrencyRepository;
@@ -30,10 +27,8 @@ public class CurrencyService {
 
     public Thread update(Environment env) {
         Thread thread = new Thread() {
-            private Boolean stop = true;
-
             public void run() {
-                while (stop) {
+                while (true) {
                     try {
                         URL url = new URL(
                                 "https://data.messari.io/api/v2/assets?fields=symbol,name,metrics/market_data&limit=500");
@@ -62,22 +57,22 @@ public class CurrencyService {
                             }
                             job = (JSONObject) job.get("metrics");
                             job = (JSONObject) job.get("market_data");
+                            if (job.get("price_usd") == null) {
+                                continue;
+                            }
                             String rate = job.get("price_usd").toString();
-                            String change_hour = "NULL";
-                            String change_day = "NULL";
-                            if (job.get("percent_change_usd_last_1_hour") != null) {
-                                change_hour = job.get("percent_change_usd_last_1_hour").toString();
+                            if (job.get("percent_change_usd_last_24_hours") == null || job.get("percent_change_usd_last_1_hour") == null) {
+                                continue;
                             }
-                            if (job.get("percent_change_usd_last_24_hours") != null) {
-                                change_day = job.get("percent_change_usd_last_24_hours").toString();
-                            }
+                            String change_hour = job.get("percent_change_usd_last_1_hour").toString();
+                            String change_day = job.get("percent_change_usd_last_24_hours").toString();
                             list.add("('" + name + "'," + rate + "," + change_hour + "," + change_day + ")");
                         }
 
                         Statement statement = (Statement) DriverManager.getConnection(
                                 env.getRequiredProperty("jdbc.url"), env.getRequiredProperty("jdbc.username"),
                                 env.getRequiredProperty("jdbc.password")).createStatement();
-                        statement.executeUpdate("INSERT currency(name, rate, change_hour, change_day) VALUES "
+                        statement.executeUpdate("INSERT currencies(name, rate, change_hour, change_day) VALUES "
                                 + String.join(", ", list)
                                 + " ON DUPLICATE KEY UPDATE rate = VALUES(rate), change_hour = VALUES(change_hour), change_day = VALUES(change_day)");
                                 Thread.sleep(10000);

@@ -20,7 +20,7 @@ body {
 .section {
   flex: 1;
   padding: 10px 0;
-  background-image: url(../img/background.png);
+  background-image: url(../img/background.jpg);
   background-repeat: repeat;
   background-size: contain;
   background-attachment: fixed;
@@ -38,6 +38,6 @@ body {
   color: black;
 }
 
-.btn{
+/* .btn{
   border-radius: 20px;
-}
+} */

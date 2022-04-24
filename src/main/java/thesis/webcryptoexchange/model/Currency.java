@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "currency")
+@Table(name = "currencies")
 public class Currency{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +17,7 @@ public class Currency{
     private Double rate;
     private Double change_hour;
     private Double change_day;
+
+    @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL)
+    private Set<Transaction> transactions;
 }

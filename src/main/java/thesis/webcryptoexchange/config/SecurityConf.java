@@ -1,5 +1,7 @@
 package thesis.webcryptoexchange.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,28 +16,32 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConf extends WebSecurityConfigurerAdapter {
-
-    // @Autowired
-    // private UserDetailsService userDetailsServ;
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf().disable().authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**").permitAll()
-                .and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/").permitAll()
-                .and().logout().permitAll().logoutSuccessUrl("/");
+    @Autowired
+    private DataSource dataSource;
+     
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())
+            .dataSource(dataSource)
+            .usersByUsernameQuery("select name, password, enabled from users where name=?")
+            .authoritiesByUsernameQuery("select name, role from users where name=?")
+        ;
     }
-
-    // @Override
-    // protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //     auth.userDetailsService(userDetailsServ).passwordEncoder(bCryptPasswordEncoder());
-    // }
+ 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers("/reg").anonymous()
+            .antMatchers("/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin().loginPage("/login").permitAll()
+            .and()
+            .logout().permitAll();
+    }
 }

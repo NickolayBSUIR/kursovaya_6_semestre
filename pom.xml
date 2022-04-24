@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>thesis</groupId>
 	<artifactId>webcryptoexchange</artifactId>
-	<version>0.0.1</version>
+	<version>0.4.3</version>
 	<packaging>war</packaging>
 	<name>webcryptoexchange</name>
 	<description>Веб-приложение для курсовой</description>
@@ -68,6 +68,10 @@
 			<artifactId>tomcat-dbcp</artifactId>
 			<version>9.0.10</version>
 		</dependency>
+		<dependency>
+          <groupId>org.springframework.session</groupId>
+          <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
 		<!-- Only for development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
