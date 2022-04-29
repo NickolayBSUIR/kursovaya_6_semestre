@@ -34,4 +34,11 @@ public class UserController {
         }
         return "redirect:/login";
     }
+
+    @GetMapping("/account")
+    public String wallet(Model model) {
+        model.addAttribute("money", userService.findOneMoney());
+        model.addAttribute("currs", userService.findCurrs());
+        return "account";
+    }
 }

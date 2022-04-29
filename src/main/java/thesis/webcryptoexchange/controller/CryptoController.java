@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.core.env.Environment;
 
+import java.util.*;
+
 import thesis.webcryptoexchange.model.Transaction;
 import thesis.webcryptoexchange.service.CryptoService;
 
@@ -48,12 +50,13 @@ public class CryptoController {
     @PostMapping("/transac")
     public String transactionTrade(Transaction trans, @RequestParam String crypto, @RequestParam Boolean buying, Model model) {
         crypService.transaction(trans, crypto, buying);
-        // if (crypService.transaction(trans, crypto, buying)){
-        //     model.addAttribute("msg", "Транзакция проведена успешно!");
-        // }
-        // else {
-        //     model.addAttribute("msg", "Транзакция безуспешна.");
-        // }
         return "redirect:/";
     }
+
+    @GetMapping("/prediction")
+    public String predictFuture(@RequestParam String curr, Model model) {
+        System.out.println(curr);
+        model.addAttribute("curr", curr);
+        return "prediction";
+    }    
 }

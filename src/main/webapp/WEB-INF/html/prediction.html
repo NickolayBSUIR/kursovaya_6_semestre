@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Торговля валютами | Больше - лучше!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+    <script th:src="@{/resources/js/predict.js}"></script>
+</head>
+
+<body>
+    <header th:insert="temps::header"></header>
+    <section class="section justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <center>
+                                <h1 th:text='${"Прогноз на следующий месяц по " + curr}'></h1>
+                            </center>
+                        </div>
+                        <div class="card-body">
+                            <center>
+                                <div id="chart_div"></div>
+                            </center>
+                            <p>Среднее изменение валюты за предыдущий месяц: <font id="avg" color="" size="5"></font></p>
+                            <p>Прогнозируемое изменение валюты через месяц: <font id="pred" color="" size="6"></font></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer th:insert="temps::footer"></footer>
+</body>
+
+</html>

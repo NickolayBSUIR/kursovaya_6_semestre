@@ -12,25 +12,38 @@ import java.net.*;
 import java.util.Scanner;
 
 import thesis.webcryptoexchange.model.User;
+import thesis.webcryptoexchange.model.UserCurrency;
 import thesis.webcryptoexchange.repository.UserRepository;
+import thesis.webcryptoexchange.repository.UserCurrencyRepository;
 
 @Service
 public class UserService {
     @Autowired
-    private UserRepository repo;
+    private UserRepository userRepo;
+
+    @Autowired
+    private UserCurrencyRepository uscrRepo;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> findAll() {
-        return repo.findAll();
+        return userRepo.findAll();
+    }
+
+    public Double findOneMoney() {
+        return userRepo.findById((long)1).get().getMoney();
+    }
+
+    public List<UserCurrency> findCurrs() {
+        return uscrRepo.findByUser((long)1);
     }
 
     public boolean save(User user) {
-        if (repo.findByName(user.getName()) != null)
+        if (userRepo.findByName(user.getName()) != null)
             return false;
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        repo.save(user);
+        userRepo.save(user);
         return true;
     }
 }
