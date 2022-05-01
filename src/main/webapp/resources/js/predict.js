@@ -34,8 +34,6 @@ function drawGraphic(json) {
     predict = (predict.reduce((a, b) => a * b, 1) - 1) * 100;
     average = ((average.reduce((a, b) => a + b, 0) / average.length) - 1) * 100;
 
-    console.log(predict);
-
     data.addColumn('date', 'X');
     data.addColumn('number');
 

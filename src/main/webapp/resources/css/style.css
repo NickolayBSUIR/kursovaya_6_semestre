@@ -57,6 +57,14 @@ body {
   background-color: #212529;
 }
 
+.bi {
+  font-size: 1.5rem;
+}
+
+.dropdown-item {
+  font-size: 1.3rem !important;
+}
+
 /* .btn{
   border-radius: 20px;
 } */

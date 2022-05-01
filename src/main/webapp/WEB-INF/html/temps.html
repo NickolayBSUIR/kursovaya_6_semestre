@@ -6,8 +6,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     </div>
     <div th:fragment="datatables">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css" />
-        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.css" />
+        <script type="text/javascript"
+            src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.5/datatables.min.js"></script>
     </div>
     <div th:fragment="crypto">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -24,18 +26,39 @@
 <header class="bg-dark" th:fragment="header">
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="color:gold;">WebCryptoExchange<br /></a>
+            <a class="navbar-brand" href="/" style="color:gold;">WebCryptoExchange<br /></a>
             <div class="dropdown">
+                <a class="align-middle" sec:authorize="isAuthenticated()" sec:authentication="name" style="font-size: 1.2rem; color: white; text-decoration: none"></a>
+                <i sec:authorize="hasRole('ROLE_USER')" class="bi bi-person-circle align-middle" style="color: white">ㅤ</i>
+                <i sec:authorize="hasRole('ROLE_ADMIN')" class="bi bi-person-workspace align-middle" style="color: white">ㅤ</i>
                 <button class="btn btn-secondary bg-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="navbar-toggler-icon"></span> </button>
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                    <li><a class="dropdown-item active" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
+                    <div sec:authorize="!isAuthenticated()">
+                        <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right"></i>ㅤВойти</a>
+                        </li>
+                        <li><a class="dropdown-item" href="/reg"><i class="bi bi-pencil-square"></i>ㅤРегистрация</a>
+                        </li>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_USER')">
+                        <li><a class="dropdown-item" href="/"><i class="bi bi-currency-exchange"></i>ㅤБиржа</a></li>
+                        <li><a class="dropdown-item" href="/account"><i class="bi bi-wallet2"></i>ㅤКошелёк</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-left"></i>ㅤВыйти</a></li>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li><a class="dropdown-item" href="/"><i class="bi bi-currency-exchange"></i>ㅤБиржа</a></li>
+                        <li><a class="dropdown-item" href="/account"><i class="bi bi-wallet2"></i>ㅤКошелёк</a></li>
+                        <li><a class="dropdown-item" href="/transacs"><i class="bi bi-clock-history"></i>ㅤТранзакции</a></li>
+                        <li><a class="dropdown-item" href="/users"><i class="bi bi-people-fill"></i>ㅤПользователи</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-left"></i>ㅤВыйти</a></li>
+                    </div>
                 </ul>
             </div>
         </div>
