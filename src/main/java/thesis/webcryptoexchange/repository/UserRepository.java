@@ -16,4 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "?1", nativeQuery = true)
     void pureQuery(String str);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update users set enabled = false where name = ?1", nativeQuery = true)
+    void blockUser(String name);
 }

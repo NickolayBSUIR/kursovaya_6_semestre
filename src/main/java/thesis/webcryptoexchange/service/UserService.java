@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 
 import java.net.*;
 import java.util.Scanner;
+import javax.servlet.http.HttpSession;
 
 import thesis.webcryptoexchange.model.User;
 import thesis.webcryptoexchange.model.UserCurrency;
@@ -20,9 +21,11 @@ import thesis.webcryptoexchange.repository.UserCurrencyRepository;
 public class UserService {
     @Autowired
     private UserRepository userRepo;
+     @Autowired
+    private UserCurrencyRepository uscrRepo;
 
     @Autowired
-    private UserCurrencyRepository uscrRepo;
+    private HttpSession session;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -32,11 +35,15 @@ public class UserService {
     }
 
     public Double findOneMoney() {
-        return userRepo.findById((long)1).get().getMoney();
+        return userRepo.findByName((String)session.getAttribute("user")).getMoney();
+    }
+
+    public void blockUser(String user) {
+        userRepo.blockUser(user);
     }
 
     public List<UserCurrency> findCurrs() {
-        return uscrRepo.findByUser((long)1);
+        return uscrRepo.findByUser(userRepo.findByName((String)session.getAttribute("user")).getId());
     }
 
     public boolean save(User user) {

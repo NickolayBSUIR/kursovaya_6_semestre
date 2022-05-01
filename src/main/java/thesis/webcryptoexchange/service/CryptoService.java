@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.sql.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
+import javax.servlet.http.HttpSession;
 
 import thesis.webcryptoexchange.model.Currency;
 import thesis.webcryptoexchange.model.UserCurrency;
@@ -26,15 +27,15 @@ import thesis.webcryptoexchange.repository.UserRepository;
 public class CryptoService {
     @Autowired
     private CurrencyRepository currRepo;
-
     @Autowired
     private TransactionRepository tranRepo;
-
     @Autowired
     private UserRepository userRepo;
-
     @Autowired
     private UserCurrencyRepository uscrRepo;
+
+    @Autowired
+    private HttpSession session;
 
     public List<Currency> findAll() {
         return currRepo.findAll();
@@ -103,7 +104,7 @@ public class CryptoService {
 
     public Boolean transaction(Transaction trans, String currency, Boolean buying) {
         Double num = 0.0;
-        User user = userRepo.findById((long)1).get();
+        User user = userRepo.findByName((String)session.getAttribute("user"));
         Currency curr = currRepo.findByName(currency);
         UserCurrency uscr = new UserCurrency();
         Boolean delete = false;

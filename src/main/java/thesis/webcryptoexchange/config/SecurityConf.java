@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import thesis.webcryptoexchange.listener.CustomAuthSuccListener;
+import org.springframework.security.core.session.*;
 
 @Configuration
 @EnableWebSecurity
@@ -37,12 +39,20 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/reg").anonymous()
-            .antMatchers("/**").permitAll()
+            .antMatchers("/reg", "/login", "/login-error").anonymous()
+            .antMatchers("/resources/css/**", "/resources/img/**").permitAll()
+            .antMatchers("/transacs", "/users", "/update", "/block").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated()
             .and()
-            .formLogin().loginPage("/login").permitAll()
+            .formLogin().successHandler(new CustomAuthSuccListener()).loginPage("/login").failureUrl("/login-error")
             .and()
-            .logout().permitAll();
+            .logout().logoutUrl("/logout").invalidateHttpSession(true).permitAll()
+            .and()
+            .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry()).expiredUrl("/login");
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+      return new SessionRegistryImpl();
     }
 }

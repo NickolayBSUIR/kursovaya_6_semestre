@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import javax.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionInformation;
+import java.util.List;
 
 import thesis.webcryptoexchange.model.User;
 import thesis.webcryptoexchange.service.UserService;
@@ -16,9 +23,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    HttpSession session;
+    @Autowired
+    SessionRegistry sessionRegistry;
+
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(User user, Model model) {
         return "login";
+    }
+
+    @GetMapping("/login-error")
+    public String errorLogin(User user,  RedirectAttributes redirect) {
+        redirect.addFlashAttribute("msg", (String)((AuthenticationException)session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION")).getMessage());
+        return "redirect:/login";
     }
 
     @GetMapping("/reg")
@@ -27,12 +45,28 @@ public class UserController {
     }
 
     @PostMapping("/reg")
-    public String registration(User user, Model model) {
+    public String registration(User user, Model model, RedirectAttributes redirect) {
         if (!userService.save(user)){
-            model.addAttribute("msg", "Пользователь с таким email уже существует");
+            model.addAttribute("msg", "Пользователь с таким логином уже существует.");
             return "reg";
         }
+        redirect.addFlashAttribute("msg", "Новый пользователь зарегистрирован.");
         return "redirect:/login";
+    }
+
+    @GetMapping("/block")
+    public String blockUser(@RequestParam String user) {
+        List<Object> users = sessionRegistry.getAllPrincipals();
+		for (Object us: users) {
+			List<SessionInformation> sessions = sessionRegistry.getAllSessions(us, false);
+			for(SessionInformation sess : sessions) {
+				if(((UserDetails)sess.getPrincipal()).getUsername().equals(user)) {;
+					sess.expireNow();
+				}
+			}
+        }
+		userService.blockUser(user);
+        return "users";
     }
 
     @GetMapping("/account")

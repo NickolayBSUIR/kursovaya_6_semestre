@@ -15,7 +15,7 @@ public class User{
 
     private String name;
     private String password;
-    private Double money;
+    private Double money = 1000.0;
     private String role = "ROLE_USER";
     private Boolean enabled = true;
 
