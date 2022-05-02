@@ -19,6 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "update users set enabled = false where name = ?1", nativeQuery = true)
-    void blockUser(String name);
+    @Query(value = "update users set enabled = ?2 where name = ?1", nativeQuery = true)
+    void changeEnabling(String name, Boolean enabled);
 }

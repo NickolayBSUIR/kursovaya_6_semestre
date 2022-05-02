@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Транзакции | WebExchange</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <div th:insert="temps::default"></div>
+</head>
+
+<body>
+    <header th:insert="temps::header"></header>
+    <section class="section justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-9">
+                    <table class="table table-dark" id="tab">
+                        <thead>
+                            <tr>
+                                <th>Время</th>
+                                <th>Пользователь</th>
+                                <th>Криптовалюты куплен./продан.</th>
+                                <th>Денежных единиц в операции</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="tran : ${trans}">
+                                <td th:text='${#temporals.format(tran.time, "dd-MM-yyyy HH:mm:ss")}'>
+                                <td th:text="${tran.user.name}">
+                                <td th:style="|${tran.buying ? 'color: green;' : 'color: red;' }|" th:text='${(tran.buying ? "+ " : "- ") + #numbers.formatDecimal(tran.currencyCount,1,5) + " " + tran.currency.name}'>
+                                <td th:style="|${!tran.buying ? 'color: green;' : 'color: red;' }|" th:text='${(!tran.buying ? "+ " : "- ") + #numbers.formatDecimal(tran.usdCount,1,5) + " $"}'>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer th:insert="temps::footer"></footer>
+</body>
+
+</html>

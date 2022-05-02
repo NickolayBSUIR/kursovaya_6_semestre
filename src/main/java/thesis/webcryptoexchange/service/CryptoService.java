@@ -41,6 +41,10 @@ public class CryptoService {
         return currRepo.findAll();
     }
 
+    public List<Transaction> findTransacs() {
+        return tranRepo.findAll();
+    }
+
     public Thread update(Environment env) {
         Thread thread = new Thread() {
             public void run() {
@@ -115,7 +119,6 @@ public class CryptoService {
         else {
             uscr = uscrRepo.findByThem(user.getId(), curr.getId()).get(0);
         }
-        trans.setSuccess(false);
         user.getTransactions().add(trans);
         curr.getTransactions().add(trans);
         trans.setCurrency(curr);
@@ -135,9 +138,9 @@ public class CryptoService {
             else {
                 return false;
             }
-            trans.setSuccess(true);
         }
         else {
+            trans.setBuying(false);
             if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount()) {
                 uscr.setCount(uscr.getCount() - trans.getUsdCount() / curr.getRate());
                 trans.setCurrencyCount(trans.getUsdCount() / curr.getRate());

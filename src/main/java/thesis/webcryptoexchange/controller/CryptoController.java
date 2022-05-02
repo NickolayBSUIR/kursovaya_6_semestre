@@ -66,4 +66,10 @@ public class CryptoController {
         model.addAttribute("curr", curr);
         return "prediction";
     }
+
+    @GetMapping("/transacs")
+    public String transacsView(Model model) {
+        model.addAttribute("trans", crypService.findTransacs());
+        return "transacs";
+    }
 }

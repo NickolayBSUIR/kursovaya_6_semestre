@@ -18,8 +18,8 @@ public class Transaction{
     private Double currencyCount;
     @Column(name = "usd_count")
     private Double usdCount;
-    private Boolean success = true;
-    private LocalTime time = LocalTime.now();
+    private Boolean buying = true;
+    private LocalDateTime time = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

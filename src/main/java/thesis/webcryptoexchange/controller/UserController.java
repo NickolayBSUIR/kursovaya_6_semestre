@@ -35,7 +35,16 @@ public class UserController {
 
     @GetMapping("/login-error")
     public String errorLogin(User user,  RedirectAttributes redirect) {
-        redirect.addFlashAttribute("msg", (String)((AuthenticationException)session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION")).getMessage());
+        String msg = ((AuthenticationException)session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION")).getMessage();
+        
+        if ("Bad credentials".equals(msg)) {
+            msg = "Введён неправильный пароль или логин.";
+        }
+        else if ("User is disabled".equals(msg)) {
+            msg = "Кое-кого заблокировали. По этому поводу обращайтесь к администрации.";
+        }
+
+        redirect.addFlashAttribute("msg", msg);
         return "redirect:/login";
     }
 
@@ -65,8 +74,14 @@ public class UserController {
 				}
 			}
         }
-		userService.blockUser(user);
-        return "users";
+		userService.changeEnabling(user, false);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/unblock")
+    public String unblockUser(@RequestParam String user) {
+		userService.changeEnabling(user, true);
+        return "redirect:/users";
     }
 
     @GetMapping("/account")
@@ -74,5 +89,11 @@ public class UserController {
         model.addAttribute("money", userService.findOneMoney());
         model.addAttribute("currs", userService.findCurrs());
         return "account";
+    }
+
+    @GetMapping("/users")
+    public String usersView(Model model) {
+        model.addAttribute("users", userService.findAll());
+        return "users";
     }
 }

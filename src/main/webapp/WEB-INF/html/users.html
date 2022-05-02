@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Пользователи | WebExchange</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <div th:insert="temps::default"></div>
+</head>
+
+<body>
+    <header th:insert="temps::header"></header>
+    <section class="section justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-9">
+                    <table class="table table-dark" id="tab">
+                        <thead>
+                            <tr>
+                                <th>Имя</th>
+                                <th>Общие активы</th>
+                                <th>Статус блокировки</th>
+                                <th>Администратор?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.name}">
+                                <td th:text='${#numbers.formatDecimal(user.money + (#aggregates.sum(user.userCurrencies.![count*currency.rate]) == null ? 0 : #aggregates.sum(user.userCurrencies.![count*currency.rate])), 1, 2) + " $"}'>
+                                <td>
+                                <div th:if='${user.role != "ROLE_ADMIN"}'>
+                                <a th:if="${user.enabled}" class="btn btn-danger" th:href="@{/block(user=${user.name})}">Заблокировать</a>
+                                <a th:if="${!user.enabled}" class="btn btn-success" th:href="@{/unblock(user=${user.name})}">Разблокировать</a>
+                                </div>
+                                </td>
+                                <td th:if='${user.role == "ROLE_ADMIN"}'><i class="bi bi-check-lg text-success"></i></td>
+                                <td th:if='${user.role != "ROLE_ADMIN"}'><i class="bi bi-x-lg text-danger"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer th:insert="temps::footer"></footer>
+</body>
+
+</html>

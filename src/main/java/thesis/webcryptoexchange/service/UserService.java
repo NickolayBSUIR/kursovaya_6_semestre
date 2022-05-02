@@ -38,8 +38,8 @@ public class UserService {
         return userRepo.findByName((String)session.getAttribute("user")).getMoney();
     }
 
-    public void blockUser(String user) {
-        userRepo.blockUser(user);
+    public void changeEnabling(String user, Boolean enabled) {
+        userRepo.changeEnabling(user, enabled);
     }
 
     public List<UserCurrency> findCurrs() {
