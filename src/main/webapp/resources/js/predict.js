@@ -22,7 +22,7 @@ function drawGraphic(json) {
     let predict = [];
     let average = [];
 
-    for (let i = 0; i < values.length - 2; i++) { // выведет 0, затем 1, затем 2
+    for (let i = 0; i < values.length - 2; i++) {
         average.push(values[i+1][1] / values[i][1]);
     }
 

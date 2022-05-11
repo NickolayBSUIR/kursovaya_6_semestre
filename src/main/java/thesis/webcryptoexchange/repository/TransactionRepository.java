@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.*;
 
 import java.time.*;
+import java.util.*;
 
 import thesis.webcryptoexchange.model.Transaction;
 
@@ -14,6 +15,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Transactional
     @Modifying
-    @Query(value = "?1", nativeQuery = true)
-    void pureQuery(String str);
+    @Query(value = "select * from transactions where user_id = ?1", nativeQuery = true)
+    List<Transaction> findByUser(Long val1);
 }

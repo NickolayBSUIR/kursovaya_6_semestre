@@ -14,39 +14,33 @@ import java.util.*;
 
 import thesis.webcryptoexchange.model.Transaction;
 import thesis.webcryptoexchange.service.CryptoService;
+import thesis.webcryptoexchange.pattern.Singleton;
 
 @Controller
 public class CryptoController {
-    // private Map<String,Model> redirectModels = new HashMap<String,Model>();
-
     @Autowired
     private CryptoService crypService;
 
     @Autowired
     private Environment env;
 
-    private Boolean isUpdate = false;
-    private Thread updateThread = new Thread();
-
     @GetMapping("/")
     public String cryptoExchange(Model model, String error) {
         model.addAttribute("currs", crypService.findAll());
-        model.addAttribute("col", isUpdate);
-        model.addAttribute("btn", (isUpdate ? "btn btn-danger" : "btn btn-success"));
+        model.addAttribute("col", Singleton.getInstance(false).value);
+        model.addAttribute("btn", (Singleton.getInstance(false).value ? "btn btn-danger" : "btn btn-success"));
         return "crypto";
     }
 
     @GetMapping("/update")
     public String updateControl(Model model, String error) {
-        if (!isUpdate) {
-            updateThread = crypService.update(env);
-            updateThread.start();
-            isUpdate = true;
+        if (!Singleton.getInstance(false).value) {
+            Singleton.getInstance(false).value = true;
         }
         else {
-            updateThread.stop();
-            isUpdate = false;
+            Singleton.getInstance(false).value = false;
         }
+        crypService.update(env);
         return "redirect:/";
     }
 
@@ -70,6 +64,7 @@ public class CryptoController {
     @GetMapping("/transacs")
     public String transacsView(Model model) {
         model.addAttribute("trans", crypService.findTransacs());
+        model.addAttribute("trans_user", crypService.findUserTransacs());
         return "transacs";
     }
 }

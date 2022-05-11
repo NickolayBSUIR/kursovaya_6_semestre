@@ -41,7 +41,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/reg", "/login", "/login-error").anonymous()
             .antMatchers("/resources/css/**", "/resources/img/**").permitAll()
-            .antMatchers("/transacs", "/users", "/update", "/block").hasAuthority("ROLE_ADMIN")
+            .antMatchers("/users", "/update", "/block").hasAuthority("ROLE_ADMIN")
             .anyRequest().authenticated()
             .and()
             .formLogin().successHandler(new CustomAuthSuccListener()).loginPage("/login").failureUrl("/login-error")

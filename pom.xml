@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>thesis</groupId>
 	<artifactId>webcryptoexchange</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>war</packaging>
 	<name>webcryptoexchange</name>
 	<description>Веб-приложение для курсовой</description>
