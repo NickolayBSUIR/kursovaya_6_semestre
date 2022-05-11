@@ -76,6 +76,11 @@
           <groupId>org.springframework.session</groupId>
           <artifactId>spring-session-jdbc</artifactId>
         </dependency>
+		<dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13.2</version>
+        </dependency>
 		<!-- Only for development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

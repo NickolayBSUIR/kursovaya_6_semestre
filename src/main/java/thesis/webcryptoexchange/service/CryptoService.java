@@ -55,7 +55,7 @@ public class CryptoService {
     }
 
     public void update(Environment env) {
-        if (!Singleton.getInstance(false).value) {
+        if (Singleton.getInstance(false).value) {
             mainThread = new Thread() {
                 public void run() {
                     while (true) {

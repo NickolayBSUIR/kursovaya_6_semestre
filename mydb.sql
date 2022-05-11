@@ -20,7 +20,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE transactions (
-  id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   currency_count DOUBLE NOT NULL,
   usd_count DOUBLE NOT NULL,
   buying BOOLEAN DEFAULT 1,
@@ -28,18 +28,16 @@ CREATE TABLE transactions (
   user_id INT NOT NULL,
   currency_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-  FOREIGN KEY (currency_id) REFERENCES currencies (id) ON DELETE CASCADE,
-  PRIMARY KEY (user_id, currency_id)
+  FOREIGN KEY (currency_id) REFERENCES currencies (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_currencies (
-  id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   count DOUBLE NOT NULL,
   user_id INT NOT NULL,
   currency_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-  FOREIGN KEY (currency_id) REFERENCES currencies (id) ON DELETE CASCADE,
-  PRIMARY KEY (user_id, currency_id)
+  FOREIGN KEY (currency_id) REFERENCES currencies (id) ON DELETE CASCADE
 );
 
 INSERT users(name,password,role,money)
