@@ -1,7 +1,5 @@
 package thesis.webcryptoexchange.model;
-import java.util.*;
 import javax.persistence.*;
-import java.time.*;
 import lombok.Getter;
 import lombok.Setter;
 

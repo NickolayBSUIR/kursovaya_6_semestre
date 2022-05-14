@@ -19,4 +19,9 @@ public interface UserCurrencyRepository extends JpaRepository<UserCurrency, Long
     @Modifying
     @Query(value = "select * from user_currencies where user_id = ?1", nativeQuery = true)
     List<UserCurrency> findByUser(Long val1);
+
+    @Transactional
+    @Modifying
+    @Query(value = "select * from user_currencies where currency_id = ?1", nativeQuery = true)
+    List<UserCurrency> findByCurrency(Long val1);
 }

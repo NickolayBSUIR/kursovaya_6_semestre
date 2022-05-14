@@ -1,6 +1,8 @@
 package thesis.webcryptoexchange.model;
 import java.util.*;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,7 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
     private String password;
     private Double money = 1000.0;
@@ -20,8 +23,10 @@ public class User{
     private Boolean enabled = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Transaction> transactions = new ArrayList<Transaction>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<UserCurrency> userCurrencies = new ArrayList<UserCurrency>();
 }

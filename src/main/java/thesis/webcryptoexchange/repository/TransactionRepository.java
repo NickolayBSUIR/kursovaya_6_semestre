@@ -17,4 +17,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Modifying
     @Query(value = "select * from transactions where user_id = ?1", nativeQuery = true)
     List<Transaction> findByUser(Long val1);
+
+    @Transactional
+    @Modifying
+    @Query(value = "select * from transactions where currency_id = ?1", nativeQuery = true)
+    List<Transaction> findByCurrency(Long val1);
 }

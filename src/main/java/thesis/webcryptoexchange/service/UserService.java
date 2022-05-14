@@ -6,10 +6,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.core.env.Environment;
-
-import java.net.*;
-import java.util.Scanner;
 import javax.servlet.http.HttpSession;
 
 import thesis.webcryptoexchange.model.User;

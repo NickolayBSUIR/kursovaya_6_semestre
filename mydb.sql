@@ -12,7 +12,7 @@ CREATE TABLE currencies (
 
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name varchar(45) NOT NULL,
+  name varchar(45) UNIQUE NOT NULL,
   password varchar(64) NOT NULL,
   money DOUBLE DEFAULT 1000,
   role varchar(45) NOT NULL,

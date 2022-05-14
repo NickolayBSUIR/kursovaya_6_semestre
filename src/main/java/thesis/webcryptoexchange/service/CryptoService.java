@@ -120,7 +120,6 @@ public class CryptoService {
     }
 
     public Boolean transaction(Transaction trans, String currency, Boolean buying) {
-        Double num = 0.0;
         User user = userRepo.findByName((String)session.getAttribute("user"));
         Currency curr = currRepo.findByName(currency);
         UserCurrency uscr = new UserCurrency();

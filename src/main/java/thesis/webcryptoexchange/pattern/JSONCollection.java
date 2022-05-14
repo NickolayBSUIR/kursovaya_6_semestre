@@ -1,7 +1,6 @@
 package thesis.webcryptoexchange.pattern;
 
 import org.json.simple.*;
-import org.json.simple.parser.*;
 
 public class JSONCollection {
     

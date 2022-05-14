@@ -1,6 +1,7 @@
 package thesis.webcryptoexchange.model;
-import java.util.*;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import java.time.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +23,12 @@ public class Transaction{
     private LocalDateTime time = LocalDateTime.now();
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "currency_id")
     private Currency currency;
 }
