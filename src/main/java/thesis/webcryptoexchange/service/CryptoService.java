@@ -137,13 +137,14 @@ public class CryptoService {
         trans.setUser(user);
         if (buying) {
             if ((curr.getRate() * trans.getCurrencyCount()) < user.getMoney()) {
-                uscr.setCount(uscr.getCount() + trans.getCurrencyCount());
                 trans.setUsdCount(curr.getRate() * trans.getCurrencyCount());
                 user.setMoney(user.getMoney() - curr.getRate() * trans.getCurrencyCount());
+                trans.setCurrencyCount(trans.getCurrencyCount() * 0.998);
+                uscr.setCount(uscr.getCount() + trans.getCurrencyCount());
             }
             else if ((curr.getRate() * trans.getCurrencyCount()) < user.getMoney() * 1.1) {
                 trans.setUsdCount(user.getMoney());
-                trans.setCurrencyCount(user.getMoney() / curr.getRate());
+                trans.setCurrencyCount((user.getMoney() / curr.getRate()) * 0.998);
                 uscr.setCount(uscr.getCount() + trans.getCurrencyCount());
                 user.setMoney(0.0);
             }
@@ -156,11 +157,11 @@ public class CryptoService {
             if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount()) {
                 uscr.setCount(uscr.getCount() - trans.getUsdCount() / curr.getRate());
                 trans.setCurrencyCount(trans.getUsdCount() / curr.getRate());
-                trans.setUsdCount(trans.getUsdCount() * 0.97);
+                trans.setUsdCount(trans.getUsdCount() * 0.97 * 0.998);
                 user.setMoney(user.getMoney() + trans.getUsdCount());
             }
             else if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount() * 1.1) {
-                trans.setUsdCount(uscr.getCount() * curr.getRate() * 0.97);
+                trans.setUsdCount(uscr.getCount() * curr.getRate() * 0.97 * 0.998);
                 trans.setCurrencyCount(uscr.getCount());
                 user.setMoney(user.getMoney() + trans.getUsdCount());
                 delete = true;
