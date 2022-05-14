@@ -156,10 +156,11 @@ public class CryptoService {
             if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount()) {
                 uscr.setCount(uscr.getCount() - trans.getUsdCount() / curr.getRate());
                 trans.setCurrencyCount(trans.getUsdCount() / curr.getRate());
+                trans.setUsdCount(trans.getUsdCount() * 0.97);
                 user.setMoney(user.getMoney() + trans.getUsdCount());
             }
             else if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount() * 1.1) {
-                trans.setUsdCount(uscr.getCount() * curr.getRate());
+                trans.setUsdCount(uscr.getCount() * curr.getRate() * 0.97);
                 trans.setCurrencyCount(uscr.getCount());
                 user.setMoney(user.getMoney() + trans.getUsdCount());
                 delete = true;

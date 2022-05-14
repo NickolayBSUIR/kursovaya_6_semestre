@@ -65,6 +65,7 @@ body {
   font-size: 1.3rem !important;
 }
 
-/* .btn{
-  border-radius: 20px;
-} */
+.modal-content {
+  background-color: #212529;
+  color: #fff;
+}

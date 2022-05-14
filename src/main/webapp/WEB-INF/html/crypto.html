@@ -43,6 +43,21 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="executeModal" tabindex="-1" aria-labelledby="executeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="executeModalLabel">Подтверждение операции</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Нет</button>
+                    <button type="submit" class="btn btn-success" form="post_form">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <footer th:insert="temps::footer"></footer>
 </body>
 
