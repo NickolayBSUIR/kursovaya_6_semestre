@@ -42,8 +42,9 @@ public class CryptoController {
     }
 
     @PostMapping("/transac")
-    public String transactionTrade(Transaction trans, @RequestParam String crypto, @RequestParam Boolean buying, RedirectAttributes redirect) {
-        if (crypService.transaction(trans, crypto, buying)){
+    public String transactionTrade(Transaction trans, @RequestParam String crypto, @RequestParam Boolean buying, @RequestParam Double fee, RedirectAttributes redirect) {
+        System.out.println(fee);
+        if (crypService.transaction(trans, crypto, buying, fee)){
             redirect.addFlashAttribute("msg", "Транзакция проведена успешно!");
         }
         else {

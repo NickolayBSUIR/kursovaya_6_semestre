@@ -119,7 +119,7 @@ public class CryptoService {
         }
     }
 
-    public Boolean transaction(Transaction trans, String currency, Boolean buying) {
+    public Boolean transaction(Transaction trans, String currency, Boolean buying, Double fee) {
         User user = userRepo.findByName((String)session.getAttribute("user"));
         Currency curr = currRepo.findByName(currency);
         UserCurrency uscr = new UserCurrency();
@@ -136,15 +136,15 @@ public class CryptoService {
         trans.setCurrency(curr);
         trans.setUser(user);
         if (buying) {
-            if ((curr.getRate() * trans.getCurrencyCount()) < user.getMoney()) {
-                trans.setUsdCount(curr.getRate() * trans.getCurrencyCount());
-                user.setMoney(user.getMoney() - curr.getRate() * trans.getCurrencyCount());
-                trans.setCurrencyCount(trans.getCurrencyCount() * 0.998);
+            trans.setUsdCount(curr.getRate() * trans.getCurrencyCount() + fee);
+            if ((trans.getUsdCount()) < user.getMoney()) {
+                user.setMoney(user.getMoney() - trans.getUsdCount());
+                trans.setCurrencyCount(trans.getCurrencyCount());
                 uscr.setCount(uscr.getCount() + trans.getCurrencyCount());
             }
-            else if ((curr.getRate() * trans.getCurrencyCount()) < user.getMoney() * 1.1) {
+            else if ((trans.getUsdCount()) < user.getMoney() * 1.1) {
                 trans.setUsdCount(user.getMoney());
-                trans.setCurrencyCount((user.getMoney() / curr.getRate()) * 0.998);
+                trans.setCurrencyCount((user.getMoney() / curr.getRate()));
                 uscr.setCount(uscr.getCount() + trans.getCurrencyCount());
                 user.setMoney(0.0);
             }
@@ -157,11 +157,11 @@ public class CryptoService {
             if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount()) {
                 uscr.setCount(uscr.getCount() - trans.getUsdCount() / curr.getRate());
                 trans.setCurrencyCount(trans.getUsdCount() / curr.getRate());
-                trans.setUsdCount(trans.getUsdCount() * 0.97 * 0.998);
+                trans.setUsdCount(trans.getUsdCount() - fee);
                 user.setMoney(user.getMoney() + trans.getUsdCount());
             }
             else if ((trans.getUsdCount() / curr.getRate()) < uscr.getCount() * 1.1) {
-                trans.setUsdCount(uscr.getCount() * curr.getRate() * 0.97 * 0.998);
+                trans.setUsdCount(uscr.getCount() * curr.getRate() - fee);
                 trans.setCurrencyCount(uscr.getCount());
                 user.setMoney(user.getMoney() + trans.getUsdCount());
                 delete = true;

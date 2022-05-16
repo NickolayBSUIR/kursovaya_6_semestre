@@ -73,16 +73,39 @@ $(() => {
 
     $(document).on('click', '.exec-modal', function(e) {
         var text = "";
+        var fee_usd = 0.0;
         var crypto = $("input[type='hidden']").val();
+        var url = "https://data.messari.io/api/v1/assets/" + crypto + "/metrics";
+        $.ajaxSetup({
+            async: false
+        });
+        $.getJSON(url, function (data, msg) {
+            if (msg != "success") {
+                console.error(msg);
+            } else {
+                fee_usd = data['data']['on_chain_data']['average_fee_usd'];
+            }
+        });
         if ($("input[name='usdCount']").val() == "" && $("input[name='currencyCount']").val() == "") {
             alert("Пожалуйста, введите значения.");
             return;
         }
+        $("form").append('<input type="hidden" name="fee" value="' + fee_usd + '" />');
         if ($("input[name='buying']:checked").val() === 'true') {
-            text = '<div class="input-group align-items-center"><input type="text" style="color: green;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto * 0.998 + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: red;" class="form-control" value="' + $("input[name='usdCount']").val() + ' $" disabled></div><br>Тип операции: <a style="color: green;">ПОКУПКА</a><br>За транзакцию в качестве оплаты были взяты <a style="color: green;">0.2%</a> криптовалюты.';
+            if (fee_usd === null) {
+                text = '<div class="input-group align-items-center"><input type="text" style="color: green;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: red;" class="form-control" value="' + $("input[name='usdCount']").val() + ' $" disabled></div><br>Тип операции: <a style="color: green;">ПОКУПКА</a>';
+            }
+            else {
+                text = '<div class="input-group align-items-center"><input type="text" style="color: green;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: red;" class="form-control" value="' + (parseFloat($("input[name='usdCount']").val()) + fee_usd).toFixed(5) + ' $" disabled></div><br>Тип операции: <a style="color: green;">ПОКУПКА</a><br>Комиссия за транзакцию: <a style="color: red;">' + fee_usd.toFixed(5) + ' $</a>.';
+            }
         }
         else {
-            text = '<div class="input-group align-items-center"><input type="text" style="color: red;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: green;" class="form-control" value="' + ($("input[name='usdCount']").val() * 0.97 * 0.998).toFixed(5) + ' $" disabled></div><br>Тип операции: <a style="color: red;">ПРОДАЖА</a><br>Из получаемый суммы была отнята <a style="color: red;">3%</a> комиссии, также <a style="color: green;">0.2%</a> криптовалюты была оплачена транзакция.';
+            if (fee_usd === null) {
+                text = '<div class="input-group align-items-center"><input type="text" style="color: red;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: green;" class="form-control" value="' + $("input[name='usdCount']").val() + ' $" disabled></div><br>Тип операции: <a style="color: red;">ПРОДАЖА</a>';
+            }
+            else {
+                text = '<div class="input-group align-items-center"><input type="text" style="color: red;" class="form-control float-end text-end" value="' + $("input[name='currencyCount']").val() + ' ' + crypto + '" disabled><span class="input-group-text" id="basic-addon3"><-></span><input type="text" style="color: green;" class="form-control" value="' + (parseFloat($("input[name='usdCount']").val()) - fee_usd).toFixed(5) + ' $" disabled></div><br>Тип операции: <a style="color: red;">ПРОДАЖА</a><br>Комиссия за транзакцию: <a style="color: red;">' + fee_usd.toFixed(5) + ' $</a>.';
+            }
         }
         text += '<br><br><a class="float-end" style="color: white; text-decoration: inherit;">Подтвердить операцию?</a>';
         $(".modal-body").empty();
